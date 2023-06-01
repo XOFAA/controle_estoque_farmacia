@@ -3,6 +3,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useState } from "react";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { useNavigate } from "react-router-dom";
 
 
 export const Login =() => {
@@ -16,15 +17,31 @@ export const Login =() => {
         }
     ]
 
-    const [usuario,setUsuario]=useState()
-
+    const [loginAdmin,setLoginAdmin]=useState()
+    
     const [opcaoSelecionada,setOpcaoSelecionada]=useState();
 
-    const [senha,setSenha]=useState()
+    const [senhaAdmin,setSenhaAdmin]=useState()
 
-    const [crf,setCrf]=useState()
-    
+    const [logincrf,setLoginCrf]=useState()
+
+     const [senha,setSenha]=useState()
+
     const [verSenha,setVerSenha]=useState(false)
+
+    const navigate = useNavigate()
+
+    const verificaUsuario =()=> {
+
+      if(logincrf=='221' && senha=='221'){
+      navigate('/farmaceutico/home')
+      }else 
+      if(loginAdmin=='admin' && senha=='admin') {
+        navigate('/admin/home')
+      }{
+        console.log('usuario ou senha incorreta.')
+      }
+    }
 
 
     return(
@@ -38,9 +55,10 @@ export const Login =() => {
                 <Typography><Divider>Tela de Login</Divider></Typography>
 
                 <TextField
-                 id="outlined-select-currency"
+               
                 select
                 label='Select'
+                
                 helperText="Por favor selecione opcão de login!"
                 onChange={(e)=>setOpcaoSelecionada(e.target.value)}
                 >
@@ -54,10 +72,14 @@ export const Login =() => {
 
                 {opcaoSelecionada=='CRF-Farmaceutico'&& <TextField
                 label='CRF'
-                
+                type="text"
+                onChange={(e)=>setLoginCrf(e.target.value)}
                 />}
+
                  {opcaoSelecionada =='Administrador' && <TextField
                 label='nome'   
+                type="text"
+                onChange={(e)=>setLoginAdmin(e.target.value)}
                 InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -67,10 +89,10 @@ export const Login =() => {
                     ),
                   }}
                 />}
-                  <TextField
+                 { opcaoSelecionada && <TextField
                 label='senha' 
                 type={verSenha ? 'text': 'password'}
-
+                onChange={(e)=>setSenha(e.target.value)}
                 InputProps={{
                 endAdornment:(
                     <InputAdornment position="end">
@@ -82,9 +104,9 @@ export const Login =() => {
                 )
                 }}
                   
-                />
+                />}
 
-                <Button>Logar</Button>
+                <Button variant="contained" onClick={()=>verificaUsuario()}>Logar</Button>
                 </Box>
                 
         </Card>
